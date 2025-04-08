@@ -2,4 +2,19 @@
     <string name="app_name">Smart_EI_Manager</string>
     <string name="click_me">Click Me</string>
     <string name="hey_dip">Hey Dip!</string>
+    <string name="rs_0_00">RS 0.00</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="smart_e_i_manager">Smart E/I Manager</string>
+    <string name="full_name">Full Name</string>
+    <string name="signup_page">Signup Page</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_have_an_account_log_in">Already have an account? Log in</string>
+    <string name="signup">Signup</string>
+    <string name="welcome_to_dashboard">welcome to Dashboard</string>
 </resources>
