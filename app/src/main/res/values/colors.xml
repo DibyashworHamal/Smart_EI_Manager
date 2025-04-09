@@ -20,4 +20,19 @@
     <color name="transparent">#00000000</color>
     <color name="navyBlue">#1D2B53</color>
     <color name="holo_blue_dark">#ff0099cc</color>
+    <color name="holo_blue_light">#ff0099cc</color>
+    <color name="holo_green_dark">#ff0099cc</color>
+    <color name="holo_green_light">#ff0099cc</color>
+    <color name="holo_orange_dark">#ff0099cc</color>
+    <color name="prussian_blue">#2E3B55</color>
+    <color name="orange">#FF9800</color>
+    <color name="indigo">#3F51B5</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="blue">#2196F3</color>
+    <color name="teal">#009688</color>
+    <color name="brown">#795548</color>
+    <color name="purple">#9C27B0</color>
+
 </resources>

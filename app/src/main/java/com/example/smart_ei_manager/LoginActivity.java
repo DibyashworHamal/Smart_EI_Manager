@@ -55,13 +55,14 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            startActivity(new Intent(this, DashboardActivity.class));
+            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+            startActivity(intent);
             Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
-            finish();
         });
 
         tvSignupRedirect.setOnClickListener(v -> {
-            startActivity(new Intent(this, SignupActivity.class));
+            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(intent);
             Toast.makeText(this, "Signup Here", Toast.LENGTH_SHORT).show();
             finish();
         });

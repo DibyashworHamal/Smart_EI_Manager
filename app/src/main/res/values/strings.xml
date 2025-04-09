@@ -17,4 +17,23 @@
     <string name="already_have_an_account_log_in">Already have an account? Log in</string>
     <string name="signup">Signup</string>
     <string name="welcome_to_dashboard">welcome to Dashboard</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="e_i_overview">E/I Overview</string>
+    <string name="total_rs_5_200_00">Total RS.5,200.00</string>
+    <string name="income">● Income</string>
+    <string name="expenses">● Expenses</string>
+    <string name="add_income">+ Add Income</string>
+    <string name="add_expense">+ Add Expense</string>
+    <string name="summary">Summary</string>
+    <string name="rs_3_500_00">RS.3,500.00</string>
+    <string name="rs_1_200_00">RS.1,200.00</string>
+    <string name="savings">Savings</string>
+    <string name="total_income">Total Income</string>
+    <string name="total_expenses">Total Expenses</string>
+    <string name="total_savings">Total Savings</string>
+    <string name="rs_800_00">RS.800.00</string>
+    <string name="todo">TODO</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="about">about</string>
 </resources>

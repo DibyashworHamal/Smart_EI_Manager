@@ -13,12 +13,20 @@
         android:theme="@style/Theme.Smart_EI_Manager"
         tools:targetApi="31">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".IncomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".DashboardActivity"
             android:exported="false" />
         <activity
             android:name=".SignupActivity"
             android:exported="false" />
-        <activity android:name=".MainActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
