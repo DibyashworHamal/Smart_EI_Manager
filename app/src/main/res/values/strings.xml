@@ -36,4 +36,16 @@
     <string name="settings">Settings</string>
     <string name="logout">Logout</string>
     <string name="about">about</string>
+    <string name="budget">Budget</string>
+    <string name="category">Category</string>
+    <string name="amount">Amount</string>
+    <string name="rs">Rs.</string>
+    <string name="note">Note</string>
+    <string name="date">Date</string>
+    <string name="save">Save</string>
+    <string name="dd_mm_yy">dd/mm/yy</string>
+    <string name="write_note">Write Note</string>
+    <string name="source">Source</string>
+    <string name="add_your_income">Add Your Income</string>
+    <string name="add_your_expenses">Add Your Expenses</string>
 </resources>

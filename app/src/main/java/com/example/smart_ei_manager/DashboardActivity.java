@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
-import java.util.Objects;
+
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -100,9 +100,15 @@ public class DashboardActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            startActivity(new Intent(DashboardActivity.this, SettingsActivity.class));
+            Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
+            startActivity(intent);
             Toast.makeText(this, "Settings Opened", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.action_logout) {
+        }
+        if (id == R.id.action_about) {
+            Intent intent = new Intent(DashboardActivity.this, AboutActivity.class);
+            startActivity(intent);
+            Toast.makeText(this, "About Opened", Toast.LENGTH_SHORT).show();
+        }else if (id == R.id.action_logout) {
             Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
             startActivity(intent);
             Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();

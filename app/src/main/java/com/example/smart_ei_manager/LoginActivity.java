@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
             startActivity(intent);
             Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+            finish();
         });
 
         tvSignupRedirect.setOnClickListener(v -> {
