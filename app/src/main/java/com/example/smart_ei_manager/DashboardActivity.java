@@ -1,10 +1,16 @@
 package com.example.smart_ei_manager;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.smart_ei_manager.data.AppDatabase;
+import com.example.smart_ei_manager.model.Transaction;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -16,26 +22,30 @@ import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Executors;
 
 
 public class DashboardActivity extends AppCompatActivity {
 
     private PieChart pieChart;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("DashboardActivity", "onCreate called");
         setContentView(R.layout.activity_dashboard);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
 
         pieChart = findViewById(R.id.pieChart);
         TextView tvIncome = findViewById(R.id.tvIncome);
         TextView tvExpenses = findViewById(R.id.tvExpenses);
         TextView tvSavings = findViewById(R.id.tvSavings);
-        TextView tvTotalAmount = findViewById(R.id.tvTotalAmount);
         Button btnAddIncome = findViewById(R.id.btnAddIncome);
         Button btnAddExpense = findViewById(R.id.btnAddExpense);
 
@@ -46,7 +56,6 @@ public class DashboardActivity extends AppCompatActivity {
         tvIncome.setText("Rs. " + incomeAmount);
         tvExpenses.setText("Rs. " + expenseAmount);
         tvSavings.setText("Rs. " + savings);
-        tvTotalAmount.setText("Total: Rs. " + incomeAmount);
 
         setupPieChart(incomeAmount, expenseAmount);
 
@@ -68,12 +77,9 @@ public class DashboardActivity extends AppCompatActivity {
         entries.add(new PieEntry(expense, "Expenses"));
 
         PieDataSet dataSet = new PieDataSet(entries, "Income vs Expenses");
-        dataSet.setColors(new int[] {
-                getResources().getColor(R.color.orange),
-                getResources().getColor(R.color.indigo)
-        });
-        dataSet.setValueTextSize(14f);
-        dataSet.setValueTextColor(getResources().getColor(android.R.color.white));
+        dataSet.setColors(ContextCompat.getColor(this, R.color.orange),
+                ContextCompat.getColor(this, R.color.indigo));
+        dataSet.setValueTextColor(ContextCompat.getColor(this, R.color.white));
 
         PieData data = new PieData(dataSet);
 
@@ -117,4 +123,43 @@ public class DashboardActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AppDatabase db = AppDatabase.getDatabase(this);
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            List<Transaction> transactions = db.transactionDao().getAllTransactions();
+
+            float totalIncome = 0f;
+            float totalExpense = 0f;
+
+            for (Transaction t : transactions) {
+                if (t.getType().equalsIgnoreCase("income")) {
+                    totalIncome += (float) t.getAmount();
+                } else if (t.getType().equalsIgnoreCase("expense")) {
+                    totalExpense += (float) t.getAmount();
+                }
+            }
+
+            float savings = totalIncome - totalExpense;
+
+            float finalTotalIncome = totalIncome;
+            float finalTotalExpense = totalExpense;
+            runOnUiThread(() -> {
+                TextView tvIncome = findViewById(R.id.tvIncome);
+                TextView tvExpenses = findViewById(R.id.tvExpenses);
+                TextView tvSavings = findViewById(R.id.tvSavings);
+
+                tvIncome.setText("Rs. " + finalTotalIncome);
+                tvExpenses.setText("Rs. " + finalTotalExpense);
+                tvSavings.setText("Rs. " + savings);
+
+                setupPieChart(finalTotalIncome, finalTotalExpense);
+            });
+        });
+    }
+
 }

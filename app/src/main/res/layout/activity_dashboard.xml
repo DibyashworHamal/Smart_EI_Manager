@@ -10,8 +10,8 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:title="@string/dashboard"
         android:titleTextColor="@color/white"
         android:elevation="4dp"
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/tvDashboardTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/dashboard"
         android:textSize="28sp"
@@ -29,12 +29,13 @@
         android:textColor="@color/black"
         android:paddingTop="16dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="VisualLintOverlap" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardOverview"
         android:layout_width="0dp"
-        android:layout_height="460dp"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
         android:layout_marginTop="16dp"
@@ -44,7 +45,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -56,30 +57,19 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvTotalAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/total_rs_5_200_00"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChart"
                 android:layout_width="230dp"
                 android:layout_height="230dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                />
+                android:layout_marginTop="12dp" />
 
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -88,20 +78,20 @@
                     android:layout_marginEnd="16dp"
                     android:text="@string/income"
                     android:textColor="@color/orange"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/expenses"
                     android:textColor="@color/indigo"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -109,7 +99,7 @@
                     android:id="@+id/btnAddIncome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="16dp"
                     android:backgroundTint="@color/orange"
                     android:text="@string/add_income"
                     android:textColor="@color/white"
@@ -142,8 +132,8 @@
 
     <LinearLayout
         android:id="@+id/summaryCards"
-        android:layout_width="379dp"
-        android:layout_height="106dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:baselineAligned="false"
         android:gravity="center"

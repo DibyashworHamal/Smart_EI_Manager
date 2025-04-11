@@ -110,7 +110,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:autofillHints=""
-        android:hint="@string/dd_mm_yy"
+        android:hint="@string/dd_mm_yyyy"
         android:focusable="false"
         android:background="@drawable/edittext_background"
         android:drawableEnd="@drawable/ic_calendar"
