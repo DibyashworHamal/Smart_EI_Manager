@@ -1,5 +1,6 @@
 [versions]
 agp = "8.9.1"
+constraintlayoutVersion = "2.2.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -13,6 +14,7 @@ mpandroidchartVersion = "v3.1.0"
 roomRuntime = "2.7.0"
 
 [libraries]
+constraintlayout-v221 = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

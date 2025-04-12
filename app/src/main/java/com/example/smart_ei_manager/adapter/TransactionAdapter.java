@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.smart_ei_manager.R;
 import com.example.smart_ei_manager.model.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
 
     private final Context context;
     private List<Transaction> transactionList;
+    private List<Transaction> fullTransactionList; // 🔄 Copy of original list for filtering
     private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -30,6 +32,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public TransactionAdapter(Context context, List<Transaction> transactionList, OnItemClickListener listener) {
         this.context = context;
         this.transactionList = transactionList;
+        this.fullTransactionList = new ArrayList<>(transactionList);
         this.listener = listener;
     }
 
@@ -75,10 +78,17 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         }
     }
 
-    // Optional: method to update list
     @SuppressLint("NotifyDataSetChanged")
     public void setTransactions(List<Transaction> transactions) {
         this.transactionList = transactions;
+        this.fullTransactionList = new ArrayList<>(transactions); // update backup list too
+        notifyDataSetChanged();
+    }
+
+    // Optional: call this from outside to reapply the full list
+    @SuppressLint("NotifyDataSetChanged")
+    public void resetFilter() {
+        transactionList = new ArrayList<>(fullTransactionList);
         notifyDataSetChanged();
     }
 }

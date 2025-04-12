@@ -132,21 +132,20 @@
         app:layout_constraintTop_toBottomOf="@id/cardOverview"
         app:layout_constraintStart_toStartOf="parent" />
 
+        <Button
+            android:id="@+id/btnViewHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_history"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:backgroundTint="@color/navyBlue"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="50dp"
+            app:layout_constraintStart_toEndOf="@id/tvSummary"
+            app:layout_constraintTop_toBottomOf="@id/cardOverview"
+            app:layout_constraintBottom_toTopOf="@id/summaryCards"/>
 
-    <Button
-        android:id="@+id/btnViewHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="@color/prussian_blue"
-        android:text="@string/view_history"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/summaryCards"
-        app:layout_constraintStart_toEndOf="@id/tvSummary"
-        app:layout_constraintTop_toBottomOf="@id/cardOverview"
-        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/summaryCards"

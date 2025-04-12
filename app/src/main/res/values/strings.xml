@@ -56,6 +56,12 @@
     <string name="delete">Delete</string>
     <string name="view_history">View History</string>
     <string name="update_transaction">Update Transaction</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="filter">Filter</string>
+    <string name="search_transactions">Search transactions...</string>
+    <string name="sort">Sort</string>
+    <string name="date_filter">date_filter</string>
     <string-array name="expense_categories">
         <item>Food</item>
         <item>Transport</item>

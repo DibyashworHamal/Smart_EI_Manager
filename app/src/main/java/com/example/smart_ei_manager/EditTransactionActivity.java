@@ -69,7 +69,8 @@ public class EditTransactionActivity extends AppCompatActivity {
             new Thread(() -> {
                 db.transactionDao().updateTransaction(transaction);
                 runOnUiThread(() -> {
-                    Toast.makeText(this, "Transaction Updated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Transaction Updated Successfully", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK); // Set result code to indicate successful update
                     finish(); // Close and go back to transaction history
                 });
             }).start();
