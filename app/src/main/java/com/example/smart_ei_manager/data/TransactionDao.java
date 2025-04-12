@@ -18,12 +18,19 @@ public interface TransactionDao {
 
     @Update
     void update(Transaction transaction);
-
     @Delete
     void delete(Transaction transaction);
 
     @Query("SELECT * FROM transactions ORDER BY id DESC")
     List<Transaction> getAllTransactions();
+
+    @Query("SELECT * FROM transactions WHERE id = :id LIMIT 1")
+    Transaction getTransactionById(int id);
     @Insert
     void insertTransaction(Transaction transaction);
+
+    @Delete
+    void deleteTransaction(Transaction transaction);
+    @Update
+    void updateTransaction(Transaction transaction);
 }

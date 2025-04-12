@@ -48,6 +48,7 @@ public class DashboardActivity extends AppCompatActivity {
         TextView tvSavings = findViewById(R.id.tvSavings);
         Button btnAddIncome = findViewById(R.id.btnAddIncome);
         Button btnAddExpense = findViewById(R.id.btnAddExpense);
+        Button btnViewHistory = findViewById(R.id.btnViewHistory);
 
         float incomeAmount = 3500f;
         float expenseAmount = 1200f;
@@ -69,6 +70,12 @@ public class DashboardActivity extends AppCompatActivity {
             Intent intent = new Intent(DashboardActivity.this, ExpenseActivity.class);
             startActivity(intent);
             Toast.makeText(this, "Add Expense Here!", Toast.LENGTH_SHORT).show();
+        });
+
+        btnViewHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, TransactionHistoryActivity.class);
+            startActivity(intent);
+            Toast.makeText(this, "View History Here!", Toast.LENGTH_SHORT).show();
         });
     }
        private void setupPieChart(float income, float expense) {

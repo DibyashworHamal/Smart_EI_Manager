@@ -103,6 +103,7 @@
                     android:backgroundTint="@color/orange"
                     android:text="@string/add_income"
                     android:textColor="@color/white"
+                    android:textSize="14sp"
                     tools:ignore="ButtonStyle" />
 
                 <Button
@@ -112,6 +113,7 @@
                     android:backgroundTint="@color/indigo"
                     android:text="@string/add_expense"
                     android:textColor="@android:color/white"
+                    android:textSize="14sp"
                     tools:ignore="ButtonStyle" />
             </LinearLayout>
 
@@ -130,11 +132,27 @@
         app:layout_constraintTop_toBottomOf="@id/cardOverview"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <Button
+        android:id="@+id/btnViewHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/prussian_blue"
+        android:text="@string/view_history"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/summaryCards"
+        app:layout_constraintStart_toEndOf="@id/tvSummary"
+        app:layout_constraintTop_toBottomOf="@id/cardOverview"
+        app:layout_constraintVertical_bias="0.0" />
+
     <LinearLayout
         android:id="@+id/summaryCards"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:baselineAligned="false"
         android:gravity="center"
         android:orientation="horizontal"

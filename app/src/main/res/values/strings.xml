@@ -48,6 +48,14 @@
     <string name="source">Source</string>
     <string name="add_your_income">Add Your Income</string>
     <string name="add_your_expenses">Add Your Expenses</string>
+    <string name="food">Food</string>
+    <string name="rs_500">Rs. 500</string>
+    <string name="_2025_04_10">2025-04-10</string>
+    <string name="lunch_with_friends">Lunch with friends</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="view_history">View History</string>
+    <string name="update_transaction">Update Transaction</string>
     <string-array name="expense_categories">
         <item>Food</item>
         <item>Transport</item>
