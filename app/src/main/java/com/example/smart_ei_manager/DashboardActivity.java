@@ -4,10 +4,16 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import android.content.Intent;
 
 import com.example.smart_ei_manager.data.AppDatabase;
 import com.example.smart_ei_manager.model.Transaction;
@@ -16,16 +22,11 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import android.content.Intent;
-import android.widget.Toast;
-import android.view.MenuItem;
-import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
-
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -48,7 +49,6 @@ public class DashboardActivity extends AppCompatActivity {
         TextView tvSavings = findViewById(R.id.tvSavings);
         Button btnAddIncome = findViewById(R.id.btnAddIncome);
         Button btnAddExpense = findViewById(R.id.btnAddExpense);
-        Button btnViewHistory = findViewById(R.id.btnViewHistory);
 
         float incomeAmount = 3500f;
         float expenseAmount = 1200f;
@@ -71,21 +71,18 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(intent);
             Toast.makeText(this, "Add Expense Here!", Toast.LENGTH_SHORT).show();
         });
-
-        btnViewHistory.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, TransactionHistoryActivity.class);
-            startActivity(intent);
-            Toast.makeText(this, "View History Here!", Toast.LENGTH_SHORT).show();
-        });
     }
-       private void setupPieChart(float income, float expense) {
+
+    private void setupPieChart(float income, float expense) {
         ArrayList<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(income, "Income"));
         entries.add(new PieEntry(expense, "Expenses"));
 
         PieDataSet dataSet = new PieDataSet(entries, "Income vs Expenses");
-        dataSet.setColors(ContextCompat.getColor(this, R.color.orange),
-                ContextCompat.getColor(this, R.color.indigo));
+        dataSet.setColors(
+                ContextCompat.getColor(this, R.color.orange),
+                ContextCompat.getColor(this, R.color.indigo)
+        );
         dataSet.setValueTextColor(ContextCompat.getColor(this, R.color.white));
 
         PieData data = new PieData(dataSet);
@@ -102,6 +99,7 @@ public class DashboardActivity extends AppCompatActivity {
         Legend legend = pieChart.getLegend();
         legend.setEnabled(false);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dashboard_menu, menu);
@@ -112,20 +110,33 @@ public class DashboardActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if (id == R.id.action_history) {
+            Intent intent = new Intent(DashboardActivity.this, TransactionHistoryActivity.class);
+            startActivity(intent);
+            Toast.makeText(this, "Transaction History Opened", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
         if (id == R.id.action_settings) {
             Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
             startActivity(intent);
             Toast.makeText(this, "Settings Opened", Toast.LENGTH_SHORT).show();
+            return true;
         }
+
         if (id == R.id.action_about) {
             Intent intent = new Intent(DashboardActivity.this, AboutActivity.class);
             startActivity(intent);
             Toast.makeText(this, "About Opened", Toast.LENGTH_SHORT).show();
-        }else if (id == R.id.action_logout) {
+            return true;
+        }
+
+        if (id == R.id.action_logout) {
             Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
             startActivity(intent);
             Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
             finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -155,6 +166,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             float finalTotalIncome = totalIncome;
             float finalTotalExpense = totalExpense;
+
             runOnUiThread(() -> {
                 TextView tvIncome = findViewById(R.id.tvIncome);
                 TextView tvExpenses = findViewById(R.id.tvExpenses);
@@ -168,5 +180,4 @@ public class DashboardActivity extends AppCompatActivity {
             });
         });
     }
-
 }

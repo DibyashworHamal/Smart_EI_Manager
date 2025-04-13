@@ -14,4 +14,10 @@
         android:icon="@drawable/ic_filter"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_overview"
+        android:title="@string/overview"
+        android:icon="@drawable/ic_overview"
+        app:showAsAction="never" />
+
 </menu>

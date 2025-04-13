@@ -62,6 +62,8 @@
     <string name="search_transactions">Search transactions...</string>
     <string name="sort">Sort</string>
     <string name="date_filter">date_filter</string>
+    <string name="overview">Overview</string>
+    <string name="expanse_overview">Expanse Overview</string>
     <string-array name="expense_categories">
         <item>Food</item>
         <item>Transport</item>

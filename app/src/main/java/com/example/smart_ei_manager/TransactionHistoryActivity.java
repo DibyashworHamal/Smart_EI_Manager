@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -166,6 +165,11 @@ public class TransactionHistoryActivity extends AppCompatActivity {
             return true;
         } else if (item.getItemId() == R.id.action_filter) {
             showDateRangePicker();
+            return true;
+        } else if (item.getItemId() == R.id.action_overview) {
+            Intent intent = new Intent(TransactionHistoryActivity.this, OverviewActivity.class);
+            startActivity(intent);
+            Toast.makeText(this, "Opening Overview", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

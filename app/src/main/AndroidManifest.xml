@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Smart_EI_Manager"
         tools:targetApi="31">
         <activity
+            android:name=".OverviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditTransactionActivity"
             android:exported="false" />
         <activity
