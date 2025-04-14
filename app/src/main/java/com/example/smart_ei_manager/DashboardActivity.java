@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +32,13 @@ import java.util.concurrent.Executors;
 public class DashboardActivity extends AppCompatActivity {
 
     private PieChart pieChart;
+    private TextView tvIncome, tvExpenses, tvSavings;
+    private ImageView imgToggleBalance;
 
-    @SuppressLint("SetTextI18n")
+    private float totalIncome = 0f;
+    private float totalExpense = 0f;
+    private boolean isBalanceVisible = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,21 +50,12 @@ public class DashboardActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle("");
 
         pieChart = findViewById(R.id.pieChart);
-        TextView tvIncome = findViewById(R.id.tvIncome);
-        TextView tvExpenses = findViewById(R.id.tvExpenses);
-        TextView tvSavings = findViewById(R.id.tvSavings);
+        tvIncome = findViewById(R.id.tvIncome);
+        tvExpenses = findViewById(R.id.tvExpenses);
+        tvSavings = findViewById(R.id.tvSavings);
         Button btnAddIncome = findViewById(R.id.btnAddIncome);
         Button btnAddExpense = findViewById(R.id.btnAddExpense);
-
-        float incomeAmount = 3500f;
-        float expenseAmount = 1200f;
-        float savings = incomeAmount - expenseAmount;
-
-        tvIncome.setText("Rs. " + incomeAmount);
-        tvExpenses.setText("Rs. " + expenseAmount);
-        tvSavings.setText("Rs. " + savings);
-
-        setupPieChart(incomeAmount, expenseAmount);
+        imgToggleBalance = findViewById(R.id.imgToggleBalance);
 
         btnAddIncome.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, IncomeActivity.class);
@@ -71,6 +68,8 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(intent);
             Toast.makeText(this, "Add Expense Here!", Toast.LENGTH_SHORT).show();
         });
+
+        imgToggleBalance.setOnClickListener(v -> toggleBalanceVisibility());
     }
 
     private void setupPieChart(float income, float expense) {
@@ -98,6 +97,24 @@ public class DashboardActivity extends AppCompatActivity {
 
         Legend legend = pieChart.getLegend();
         legend.setEnabled(false);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void toggleBalanceVisibility() {
+        if (isBalanceVisible) {
+            tvIncome.setText("Rs. ****");
+            tvExpenses.setText("Rs. ****");
+            tvSavings.setText("Rs. ****");
+            imgToggleBalance.setImageResource(R.drawable.ic_visibility_off);
+            isBalanceVisible = false;
+        } else {
+            float savings = totalIncome - totalExpense;
+            tvIncome.setText("Rs. " + totalIncome);
+            tvExpenses.setText("Rs. " + totalExpense);
+            tvSavings.setText("Rs. " + savings);
+            imgToggleBalance.setImageResource(R.drawable.ic_visibility);
+            isBalanceVisible = true;
+        }
     }
 
     @Override
@@ -151,32 +168,34 @@ public class DashboardActivity extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(() -> {
             List<Transaction> transactions = db.transactionDao().getAllTransactions();
 
-            float totalIncome = 0f;
-            float totalExpense = 0f;
+            float income = 0f;
+            float expense = 0f;
 
             for (Transaction t : transactions) {
                 if (t.getType().equalsIgnoreCase("income")) {
-                    totalIncome += (float) t.getAmount();
+                    income += (float) t.getAmount();
                 } else if (t.getType().equalsIgnoreCase("expense")) {
-                    totalExpense += (float) t.getAmount();
+                    expense += (float) t.getAmount();
                 }
             }
 
-            float savings = totalIncome - totalExpense;
+            float savings = income - expense;
 
-            float finalTotalIncome = totalIncome;
-            float finalTotalExpense = totalExpense;
+            totalIncome = income;
+            totalExpense = expense;
 
             runOnUiThread(() -> {
-                TextView tvIncome = findViewById(R.id.tvIncome);
-                TextView tvExpenses = findViewById(R.id.tvExpenses);
-                TextView tvSavings = findViewById(R.id.tvSavings);
+                if (isBalanceVisible) {
+                    tvIncome.setText("Rs. " + totalIncome);
+                    tvExpenses.setText("Rs. " + totalExpense);
+                    tvSavings.setText("Rs. " + savings);
+                } else {
+                    tvIncome.setText("Rs. ****");
+                    tvExpenses.setText("Rs. ****");
+                    tvSavings.setText("Rs. ****");
+                }
 
-                tvIncome.setText("Rs. " + finalTotalIncome);
-                tvExpenses.setText("Rs. " + finalTotalExpense);
-                tvSavings.setText("Rs. " + savings);
-
-                setupPieChart(finalTotalIncome, finalTotalExpense);
+                setupPieChart(totalIncome, totalExpense);
             });
         });
     }

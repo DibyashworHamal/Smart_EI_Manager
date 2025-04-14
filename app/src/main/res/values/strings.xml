@@ -64,6 +64,11 @@
     <string name="date_filter">date_filter</string>
     <string name="overview">Overview</string>
     <string name="expanse_overview">Expanse Overview</string>
+    <string name="date_wise_income">Date-wise Income</string>
+    <string name="date_wise_expenses">Date-wise Expenses</string>
+    <string name="income_overview">Income Overview</string>
+    <string name="expense_overview">Expense Overview</string>
+    <string name="toggle_balance_visibility">Toggle Balance Visibility</string>
     <string-array name="expense_categories">
         <item>Food</item>
         <item>Transport</item>

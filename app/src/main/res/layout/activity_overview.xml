@@ -1,58 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="@color/white"
+    android:fillViewport="true"
+    tools:context=".OverviewActivity">
 
-    <!-- Expense Overview Title -->
-    <TextView
-        android:id="@+id/tvOverview"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/expanse_overview"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <!-- Expense BarChart -->
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barChart"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/tvOverview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- 🔻 Expense Bar Chart -->
+        <TextView
+            android:id="@+id/tvExpenseBarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expense_overview"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal" />
 
-    <!-- Income Overview Title -->
-    <TextView
-        android:id="@+id/tvIncomeOverview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Income Overview"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/barChart"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp" />
 
-    <!-- Income BarChart -->
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barChartIncome"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/tvIncomeOverview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- 🔻 Income Bar Chart -->
+        <TextView
+            android:id="@+id/tvIncomeBarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/income_overview"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChartIncome"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 🔻 Expense Line Chart -->
+        <TextView
+            android:id="@+id/tvExpenseLineTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_wise_expenses"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChartExpense"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 🔻 Income Line Chart -->
+        <TextView
+            android:id="@+id/tvIncomeLineTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_wise_income"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChartIncome"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+</ScrollView>
