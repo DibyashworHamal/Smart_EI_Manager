@@ -1,4 +1,4 @@
-package com.example.smart_ei_manager.data;
+package com.example.smart_ei_manager.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

@@ -1,6 +1,12 @@
 package com.example.smart_ei_manager;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,13 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
-
 import com.example.smart_ei_manager.data.AppDatabase;
+import com.example.smart_ei_manager.model.Budget;
 import com.example.smart_ei_manager.model.Transaction;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -25,7 +31,9 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 
@@ -38,6 +46,8 @@ public class DashboardActivity extends AppCompatActivity {
     private float totalIncome = 0f;
     private float totalExpense = 0f;
     private boolean isBalanceVisible = true;
+
+    private static final String CHANNEL_ID = "budget_warning_channel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +68,18 @@ public class DashboardActivity extends AppCompatActivity {
         imgToggleBalance = findViewById(R.id.imgToggleBalance);
 
         btnAddIncome.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, IncomeActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, IncomeActivity.class));
             Toast.makeText(this, "Add Income Here!", Toast.LENGTH_SHORT).show();
         });
 
         btnAddExpense.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, ExpenseActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, ExpenseActivity.class));
             Toast.makeText(this, "Add Expense Here!", Toast.LENGTH_SHORT).show();
         });
 
         imgToggleBalance.setOnClickListener(v -> toggleBalanceVisibility());
+
+        createNotificationChannel();
     }
 
     private void setupPieChart(float income, float expense) {
@@ -128,29 +138,25 @@ public class DashboardActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_history) {
-            Intent intent = new Intent(DashboardActivity.this, TransactionHistoryActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, TransactionHistoryActivity.class));
             Toast.makeText(this, "Transaction History Opened", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, SettingsActivity.class));
             Toast.makeText(this, "Settings Opened", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         if (id == R.id.action_about) {
-            Intent intent = new Intent(DashboardActivity.this, AboutActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, AboutActivity.class));
             Toast.makeText(this, "About Opened", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         if (id == R.id.action_logout) {
-            Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, LoginActivity.class));
             Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
             finish();
             return true;
@@ -167,20 +173,33 @@ public class DashboardActivity extends AppCompatActivity {
 
         Executors.newSingleThreadExecutor().execute(() -> {
             List<Transaction> transactions = db.transactionDao().getAllTransactions();
+            List<Budget> budgets = db.budgetDao().getAllBudgets();
 
             float income = 0f;
             float expense = 0f;
+            Map<String, Float> expenseMap = new HashMap<>();
 
             for (Transaction t : transactions) {
                 if (t.getType().equalsIgnoreCase("income")) {
                     income += (float) t.getAmount();
                 } else if (t.getType().equalsIgnoreCase("expense")) {
                     expense += (float) t.getAmount();
+                    String category = t.getCategory();
+                    expenseMap.put(category, expenseMap.getOrDefault(category, 0f) + (float) t.getAmount());
+                }
+            }
+
+            if (budgets != null) {
+                int notificationId = 100;
+                for (Budget budget : budgets) {
+                    float spent = expenseMap.getOrDefault(budget.getCategory(), 0f);
+                    if (spent > budget.getAmount()) {
+                        showBudgetWarningNotification(notificationId++, budget.getCategory(), budget.getAmount(), spent);
+                    }
                 }
             }
 
             float savings = income - expense;
-
             totalIncome = income;
             totalExpense = expense;
 
@@ -198,5 +217,38 @@ public class DashboardActivity extends AppCompatActivity {
                 setupPieChart(totalIncome, totalExpense);
             });
         });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Budget Warnings",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel.setDescription("Notifications when budget limit is exceeded");
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+    }
+    private void showBudgetWarningNotification(int id, String category, double budget, double spent) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Intent intent = new Intent(this, ViewBudgetActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, id, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_warning)
+                .setContentTitle("⚠ Budget Limit Exceeded")
+                .setContentText("Rs. " + spent + " spent on " + category + " (Limit: Rs. " + budget + ")")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setGroup("budget_warnings_group");
+
+        notificationManager.notify(id, builder.build());
     }
 }

@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -23,17 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.smart_ei_manager.adapter.TransactionAdapter;
 import com.example.smart_ei_manager.data.AppDatabase;
 import com.example.smart_ei_manager.model.Transaction;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.*;
 
 public class TransactionHistoryActivity extends AppCompatActivity {
 
@@ -41,8 +34,9 @@ public class TransactionHistoryActivity extends AppCompatActivity {
     private List<Transaction> transactionList;
     private AppDatabase db;
     private EditText etSearch;
-
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+    private Transaction recentlyDeletedTransaction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,15 +47,14 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
-        @SuppressLint("WrongViewCast")
-        androidx.appcompat.widget.AppCompatTextView titleText = findViewById(R.id.tvTitle);
+        @SuppressLint("WrongViewCast") androidx.appcompat.widget.AppCompatTextView titleText = findViewById(R.id.tvTitle);
         if (titleText != null) {
             titleText.setText(getString(R.string.smart_e_i_manager));
         }
 
         etSearch = findViewById(R.id.etSearch);
-        AtomicReference<RecyclerView> recyclerTransactions = new AtomicReference<>(findViewById(R.id.recyclerTransactions));
-        recyclerTransactions.get().setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerTransactions = findViewById(R.id.recyclerTransactions);
+        recyclerTransactions.setLayoutManager(new LinearLayoutManager(this));
 
         db = AppDatabase.getInstance(this);
 
@@ -73,33 +66,59 @@ public class TransactionHistoryActivity extends AppCompatActivity {
                     public void onEditClick(Transaction transaction) {
                         Intent intent = new Intent(TransactionHistoryActivity.this, EditTransactionActivity.class);
                         intent.putExtra("transaction_id", transaction.getId());
+                        //noinspection deprecation
                         startActivityForResult(intent, 100);
                         Toast.makeText(TransactionHistoryActivity.this, "Edit Transaction Here!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onDeleteClick(Transaction transaction) {
-                        new AlertDialog.Builder(TransactionHistoryActivity.this)
-                                .setTitle("Delete Transaction")
-                                .setMessage("Are you sure you want to delete this transaction?")
-                                .setPositiveButton("Yes", (dialog, which) -> new Thread(() -> {
-                                    db.transactionDao().deleteTransaction(transaction);
-                                    List<Transaction> updatedList = db.transactionDao().getAllTransactions();
-                                    runOnUiThread(() -> {
-                                        transactionList = updatedList;
-                                        adapter.setTransactions(updatedList);
-                                        Toast.makeText(TransactionHistoryActivity.this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
-                                    });
-                                }).start())
-                                .setNegativeButton("No", null)
-                                .show();
+                        showDeleteConfirmation(transaction);
                     }
                 });
-
-                recyclerTransactions.get().setAdapter(adapter);
+                recyclerTransactions.setAdapter(adapter);
                 setupSearchFilter();
             });
         }).start();
+    }
+
+    private void showDeleteConfirmation(Transaction transaction) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Transaction")
+                .setMessage("Are you sure you want to delete this transaction?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    recentlyDeletedTransaction = transaction;
+                    deleteTransaction(transaction);
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void deleteTransaction(Transaction transaction) {
+        new Thread(() -> {
+            db.transactionDao().deleteTransaction(transaction);
+            transactionList = db.transactionDao().getAllTransactions();
+            runOnUiThread(() -> {
+                adapter.setTransactions(transactionList);
+                showUndoSnackbar();
+            });
+        }).start();
+    }
+
+    private void showUndoSnackbar() {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.recyclerTransactions), "Transaction deleted", Snackbar.LENGTH_LONG);
+        snackbar.setAction("UNDO", v -> undoDelete());
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        if (recentlyDeletedTransaction != null) {
+            new Thread(() -> {
+                db.transactionDao().insert(recentlyDeletedTransaction);
+                transactionList = db.transactionDao().getAllTransactions();
+                runOnUiThread(() -> adapter.setTransactions(transactionList));
+            }).start();
+        }
     }
 
     private void setupSearchFilter() {
@@ -167,25 +186,21 @@ public class TransactionHistoryActivity extends AppCompatActivity {
             showDateRangePicker();
             return true;
         } else if (item.getItemId() == R.id.action_overview) {
-            Intent intent = new Intent(TransactionHistoryActivity.this, OverviewActivity.class);
-            startActivity(intent);
-            Toast.makeText(this, "Opening Overview", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, OverviewActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void showSortMenu() {
-        View anchorView = findViewById(R.id.etSearch);
-        PopupMenu popupMenu = new PopupMenu(this, anchorView);
+        PopupMenu popupMenu = new PopupMenu(this, etSearch);
         popupMenu.getMenu().add("Date ↓ Newest First");
         popupMenu.getMenu().add("Date ↑ Oldest First");
         popupMenu.getMenu().add("Amount ↓ High to Low");
         popupMenu.getMenu().add("Amount ↑ Low to High");
 
         popupMenu.setOnMenuItemClickListener(menuItem -> {
-            String selected = menuItem.getTitle().toString();
-            switch (selected) {
+            switch (Objects.requireNonNull(menuItem.getTitle()).toString()) {
                 case "Date ↓ Newest First": sortTransactionsByDateDesc(); break;
                 case "Date ↑ Oldest First": sortTransactionsByDateAsc(); break;
                 case "Amount ↓ High to Low": sortTransactionsByAmountDesc(); break;
@@ -224,8 +239,8 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         try {
             Date startDate = sdf.parse(startDateStr);
             Date endDate = sdf.parse(endDateStr);
-
             List<Transaction> filteredList = new ArrayList<>();
+
             for (Transaction transaction : transactionList) {
                 Date transactionDate = sdf.parse(transaction.getDate());
                 if (transactionDate != null && !transactionDate.before(startDate) && !transactionDate.after(endDate)) {
@@ -237,6 +252,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
             Toast.makeText(this, "Filtered from " + startDateStr + " to " + endDateStr, Toast.LENGTH_SHORT).show();
 
         } catch (ParseException e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
             Toast.makeText(this, "Date parse error!", Toast.LENGTH_SHORT).show();
         }
@@ -262,6 +278,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         adapter.setTransactions(transactionList);
     }
 
+    /** @noinspection deprecation*/
     @Override
     public void onBackPressed() {
         super.onBackPressed();

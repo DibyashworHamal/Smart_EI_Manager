@@ -69,6 +69,12 @@
     <string name="income_overview">Income Overview</string>
     <string name="expense_overview">Expense Overview</string>
     <string name="toggle_balance_visibility">Toggle Balance Visibility</string>
+    <string name="set_budget">Set Budget</string>
+    <string name="enter_budget_amount">Enter Budget Amount</string>
+    <string name="save_budget">Save Budget</string>
+    <string name="rs_5000">Rs. 5000</string>
+    <string name="search_budget">Search Budget</string>
+    <string name="enter_category">Enter category</string>
     <string-array name="expense_categories">
         <item>Food</item>
         <item>Transport</item>
@@ -76,7 +82,7 @@
         <item>Shopping</item>
         <item>Bills</item>
         <item>Entertainment</item>
-        <item>Others</item>
+        <item>Other</item>
     </string-array>
     <string-array name="income_categories">"
         <item>Salary</item>

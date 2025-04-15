@@ -1,12 +1,12 @@
 package com.example.smart_ei_manager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -15,6 +15,15 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_settings);
+
+        TextView tvSetBudget = findViewById(R.id.tvSetBudget);
+        tvSetBudget.setOnClickListener(v -> {
+            Intent intent = new Intent(SettingsActivity.this, AddBudgetActivity.class);
+            startActivity(intent);
+            Toast.makeText(this, "Set Budget Here!", Toast.LENGTH_SHORT).show();
+            finish();
+        });
+
 
     }
 }

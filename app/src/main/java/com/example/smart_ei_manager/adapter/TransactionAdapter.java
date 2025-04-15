@@ -21,7 +21,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     private final Context context;
     private List<Transaction> transactionList;
-    private List<Transaction> fullTransactionList; // 🔄 Copy of original list for filtering
+    private List<Transaction> fullTransactionList;
     private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -81,14 +81,20 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     @SuppressLint("NotifyDataSetChanged")
     public void setTransactions(List<Transaction> transactions) {
         this.transactionList = transactions;
-        this.fullTransactionList = new ArrayList<>(transactions); // update backup list too
+        this.fullTransactionList = new ArrayList<>(transactions);
         notifyDataSetChanged();
     }
 
-    // Optional: call this from outside to reapply the full list
     @SuppressLint("NotifyDataSetChanged")
     public void resetFilter() {
         transactionList = new ArrayList<>(fullTransactionList);
         notifyDataSetChanged();
+    }
+
+    // ✅ Optional helper method to add one transaction back to the list
+    public void addTransaction(Transaction transaction) {
+        transactionList.add(transaction);
+        fullTransactionList.add(transaction);
+        notifyItemInserted(transactionList.size() - 1);
     }
 }
