@@ -75,6 +75,13 @@
     <string name="rs_5000">Rs. 5000</string>
     <string name="search_budget">Search Budget</string>
     <string name="enter_category">Enter category</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="edit_image">Edit Image</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="notifications">Notifications</string>
+    <string name="user_name">User Name</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="enter_your_name">Enter your name</string>
     <string-array name="expense_categories">
         <item>Food</item>
         <item>Transport</item>

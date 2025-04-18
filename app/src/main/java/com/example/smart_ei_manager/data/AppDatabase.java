@@ -6,18 +6,18 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.smart_ei_manager.model.Transaction;
-import com.example.smart_ei_manager.model.Transaction;
 import com.example.smart_ei_manager.model.Budget;
 import com.example.smart_ei_manager.dao.TransactionDao;
-import com.example.smart_ei_manager.dao.BudgetDao;  // ✅ Import this
+import com.example.smart_ei_manager.dao.BudgetDao;
 
 /** @noinspection ALL*/
-@Database(entities = {Transaction.class, Budget.class}, version = 1, exportSchema = false)
+@Database(entities = {Transaction.class, Budget.class,}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
 
     public abstract TransactionDao transactionDao();
     public abstract BudgetDao budgetDao();
+
     public static synchronized AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),

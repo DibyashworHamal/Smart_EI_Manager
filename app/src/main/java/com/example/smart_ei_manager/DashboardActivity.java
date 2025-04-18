@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -16,10 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.smart_ei_manager.data.AppDatabase;
 import com.example.smart_ei_manager.model.Budget;
@@ -52,7 +51,6 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("DashboardActivity", "onCreate called");
         setContentView(R.layout.activity_dashboard);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -70,11 +68,13 @@ public class DashboardActivity extends AppCompatActivity {
         btnAddIncome.setOnClickListener(v -> {
             startActivity(new Intent(this, IncomeActivity.class));
             Toast.makeText(this, "Add Income Here!", Toast.LENGTH_SHORT).show();
+            finish();
         });
 
         btnAddExpense.setOnClickListener(v -> {
             startActivity(new Intent(this, ExpenseActivity.class));
             Toast.makeText(this, "Add Expense Here!", Toast.LENGTH_SHORT).show();
+            finish();
         });
 
         imgToggleBalance.setOnClickListener(v -> toggleBalanceVisibility());
@@ -234,6 +234,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         }
     }
+
     private void showBudgetWarningNotification(int id, String category, double budget, double spent) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

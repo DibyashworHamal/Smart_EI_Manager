@@ -2,7 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,45 +19,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Smart_EI_Manager"
         tools:targetApi="31">
-        <activity
-            android:name=".ViewBudgetActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AddBudgetActivity"
-            android:exported="false" />
-        <activity
-            android:name=".OverviewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EditTransactionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".TransactionHistoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AboutActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ExpenseActivity"
-            android:exported="false" />
-        <activity
-            android:name=".IncomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DashboardActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SignupActivity"
-            android:exported="false" />
+
+        <activity android:name=".EditProfileActivity" android:exported="false" />
+        <activity android:name=".ViewBudgetActivity" android:exported="false" />
+        <activity android:name=".AddBudgetActivity" android:exported="false" />
+        <activity android:name=".OverviewActivity" android:exported="false" />
+        <activity android:name=".EditTransactionActivity" android:exported="false" />
+        <activity android:name=".TransactionHistoryActivity" android:exported="false" />
+        <activity android:name=".AboutActivity" android:exported="false" />
+        <activity android:name=".SettingsActivity" android:exported="false" />
+        <activity android:name=".ExpenseActivity" android:exported="false" />
+        <activity android:name=".IncomeActivity" android:exported="false" />
+        <activity android:name=".DashboardActivity" android:exported="false" />
+        <activity android:name=".SignupActivity" android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
